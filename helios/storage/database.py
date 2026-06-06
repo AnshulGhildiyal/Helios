@@ -63,5 +63,17 @@ def save_test_cases(run_id: str, target_model: str, cases: list):
     conn.close()
     print(f"Saved {len(cases)} test cases to database under Run ID: {run_id}")
 
+def save_evaluation_result(case_id: int, system_answer: str, score: int, hallucination_flag: bool, reasoning: str):
+    """Saves the final graded metrics for a specific test case."""
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO metrics_results (case_id, system_answer, score, hallucination_flag, reasoning) VALUES (?, ?, ?, ?, ?)",
+        (case_id, system_answer, score, hallucination_flag, reasoning)
+    )
+    conn.commit()
+    conn.close()
+
+    
 if __name__ == "__main__":
     init_db()
