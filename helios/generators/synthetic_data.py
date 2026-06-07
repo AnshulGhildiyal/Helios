@@ -43,7 +43,8 @@ async def generate_test_cases_from_chunk(raw_text: str, num_cases: int = 3) -> T
         response = await acompletion(
             model="gemini/gemini-2.5-flash",
             messages=[{"role": "user", "content": prompt}],
-            temperature=0.3 # Slight creativity allowed here to generate diverse questions
+            temperature=0.3, # Slight creativity allowed here to generate diverse questions
+            num_retries = 3
         )
         
         raw_output = response.choices[0].message.content
